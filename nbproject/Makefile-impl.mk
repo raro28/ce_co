@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=pic16.X
+PROJECTNAME=ce_co
 
 # Active Configuration
 DEFAULTCONF=default

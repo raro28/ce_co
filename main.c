@@ -11,6 +11,12 @@
  * Bus usado pra las partes alta y abjas del bus de direcciones
  *  y los datos.
  */
+#define START_ROM_ADDR 0x2000
+#define END_ROM_ADDR 0x3FFF
+
+#define START_RAM_ADDR 0x0
+#define END_RAM_ADDR 0x7FF
+
 #define UNIVERSAL_BUS PORTB
 #define AL0 RA0 //Address Latch 0
 #define AL1 RA1 //Address Latch 1
@@ -21,7 +27,7 @@
  * Un retraso de aproximadamente 3*count ciclos
  */
 void dowait() {
-    int count = 100;
+    int count = 200;
     while (count--);
 }
 
@@ -63,11 +69,11 @@ void display()
  *
  * param action: accion a relizar en determinada localidad de memoria
  */
-void process(void (*action)())
+void process(void (*action)(), unsigned int from, unsigned int to)
 {
-    unsigned int address = 0; //Primer direccion;
+    unsigned int address = from; //Primer direccion;
 
-    while (address < 0xFFFF) {
+    while (address <= to) {
         //---Condiciones iniciales
         UNIVERSAL_BUS = 0;
         AL0 = 1;
@@ -100,8 +106,9 @@ int main(void) {
     TRISB = 0x0;
     RP0 = 0x0;
 
-    process(store);
-    process(display);
+    process(store,START_RAM_ADDR, END_RAM_ADDR); //Guarda datos en RAM
+    process(display,START_RAM_ADDR, END_RAM_ADDR); //Muestra datos de la RAM
+    process(display,START_ROM_ADDR, END_ROM_ADDR); //Muestra datos de la ROM
 
     while (1);
 }
