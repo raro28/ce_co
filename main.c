@@ -7,16 +7,23 @@
 
 #include <xc.h>
 #pragma config FOSC = XT, WDTE = OFF, CP = OFF, PWRTE = OFF
+
+/*
+ *Intervalo de direcciones de la memoria ROM.
+ */
+#define START_ROM_ADDR 0b0010000000000000
+#define END_ROM_ADDR   0b0011111111111111
+
+/*
+ *Intervalo de direcciones de la memoria RAM.
+ */
+#define START_RAM_ADDR 0b0000000000000000
+#define END_RAM_ADDR   0b0000011111111111
+
 /*
  * Bus usado pra las partes alta y abjas del bus de direcciones
  *  y los datos.
  */
-#define START_ROM_ADDR 0x2000
-#define END_ROM_ADDR 0x3FFF
-
-#define START_RAM_ADDR 0x0
-#define END_RAM_ADDR 0x7FF
-
 #define UNIVERSAL_BUS PORTB
 #define AL0 RA0 //Address Latch 0
 #define AL1 RA1 //Address Latch 1
@@ -31,37 +38,31 @@ void dowait() {
     while (count--);
 }
 
-/**
- * Almacena 10101010 en la direccion presente en los latches
- */
-void store()
-{
-    //--datos
-    UNIVERSAL_BUS = 0b10101010;
-    notWE = 0;
-
-    dowait();
-    
-    notWE = 1;
-}
-
-/**
- * Unicamente pone en el bus universal los datos de
- * la direccion presente en los latches
- */
-void display()
-{
+void portBAsInput() {
     RB0 = 1;
     TRISB = 0xFF;
     RB0 = 0;
+}
 
-    notOE = 0;
-    dowait();
-    notOE = 1;
-
+void portBAsOutput() {
     RB0 = 1;
     TRISB = 0;
     RB0 = 0;
+}
+
+void loadAddress(unsigned int address) {
+    AL0 = 1;
+    AL1 = 1;
+    //---bits bajos de la direccion
+    UNIVERSAL_BUS = address;
+    dowait();
+    AL0 = 0;
+    dowait();
+    //---bits altos de la direccion
+    UNIVERSAL_BUS = address >> 8;
+    dowait();
+    AL1 = 0;
+    dowait();
 }
 
 /*
@@ -69,11 +70,10 @@ void display()
  *
  * param action: accion a relizar en determinada localidad de memoria
  */
-void process(void (*action)(), unsigned int from, unsigned int to)
-{
-    unsigned int address = from; //Primer direccion;
+void copyAll(unsigned int from, unsigned int to) {
+    unsigned int ramAddress = from; //Primer direccion;
 
-    while (address <= to) {
+    while (ramAddress <= to) {
         //---Condiciones iniciales
         UNIVERSAL_BUS = 0;
         AL0 = 1;
@@ -81,18 +81,31 @@ void process(void (*action)(), unsigned int from, unsigned int to)
         notWE = 1;
         notOE = 1;
 
-        //---bits bajos de la direccion
-        UNIVERSAL_BUS = address;
-        AL0 = 0;
-        dowait();
-        //---bits altos de la direccion
-        UNIVERSAL_BUS = address >> 8;
-        AL1 = 0;
         dowait();
 
-        action();
+        unsigned int romAddres = ramAddress | START_ROM_ADDR;
 
-        address++;
+        //----carga el dato desde la ROM
+
+        loadAddress(romAddres);
+        portBAsInput();
+        notOE = 0; //--Coloca el dato de la ROM en el bus universal
+        dowait();
+        FSR = PORTB; //--PIC guarda el dato
+        PORTB = 0;
+        portBAsOutput();
+        notOE = 1;
+        dowait();
+
+        //----guarda el dato del bus en la RAM
+
+        loadAddress(ramAddress);
+        UNIVERSAL_BUS = FSR; //--Recuperamos el dato del PIC y lo colocamos en el bus universal
+        dowait();
+        notWE = 0; //Se guarda en la RAM
+        dowait();
+
+        ramAddress++;
     }
 }
 
@@ -106,9 +119,7 @@ int main(void) {
     TRISB = 0x0;
     RP0 = 0x0;
 
-    process(store,START_RAM_ADDR, END_RAM_ADDR); //Guarda datos en RAM
-    process(display,START_RAM_ADDR, END_RAM_ADDR); //Muestra datos de la RAM
-    process(display,START_ROM_ADDR, END_ROM_ADDR); //Muestra datos de la ROM
+    copyAll(START_RAM_ADDR, END_RAM_ADDR); //Copia de la ROM a la RAM
 
     while (1);
 }
