@@ -21,14 +21,14 @@
 #define END_RAM_ADDR   0b0000011111111111
 
 /*
- * Bus usado pra las partes alta y abjas del bus de direcciones
+ * Bus usado pra las partes alta y baja del bus de direcciones
  *  y los datos.
  */
 #define UNIVERSAL_BUS PORTB
 #define AL0 RA0 //Address Latch 0
 #define AL1 RA1 //Address Latch 1
-#define notOE RA2 //Output Enable de la RAM
-#define notWE RA3 //Write Enable de la RAM
+#define notOE RA2 //Output Enable
+#define notWE RA3 //Write Enable
 
 /**
  * Un retraso de aproximadamente 3*count ciclos
@@ -36,18 +36,6 @@
 void dowait() {
     int count = 200;
     while (count--);
-}
-
-void portBAsInput() {
-    RB0 = 1;
-    TRISB = 0xFF;
-    RB0 = 0;
-}
-
-void portBAsOutput() {
-    RB0 = 1;
-    TRISB = 0;
-    RB0 = 0;
 }
 
 void loadAddress(unsigned int address) {
@@ -65,15 +53,19 @@ void loadAddress(unsigned int address) {
     dowait();
 }
 
-/*
- * Accesso secuencial en un espacio de memoria de 16 bits
- *
- * param action: accion a relizar en determinada localidad de memoria
- */
-void copyAll(unsigned int from, unsigned int to) {
-    unsigned int ramAddress = from; //Primer direccion;
+int main(void) {
+    //----configuraciones iniciales----//
+    RP0 = 0x0;
+    PORTA = 0x0;
+    PORTB = 0x0;
+    RP0 = 0x1;
+    TRISA = 0x0;
+    TRISB = 0x0;
+    RP0 = 0x0;
 
-    while (ramAddress <= to) {
+    unsigned int ramAddress = START_RAM_ADDR; //Primer direccion;
+
+    while (ramAddress <= END_RAM_ADDR) {
         //---Condiciones iniciales
         UNIVERSAL_BUS = 0;
         AL0 = 1;
@@ -88,12 +80,16 @@ void copyAll(unsigned int from, unsigned int to) {
         //----carga el dato desde la ROM
 
         loadAddress(romAddres);
-        portBAsInput();
+        RB0 = 1;
+        TRISB = 0xFF; //PortB como entrada
+        RB0 = 0;
         notOE = 0; //--Coloca el dato de la ROM en el bus universal
         dowait();
         FSR = PORTB; //--PIC guarda el dato
         PORTB = 0;
-        portBAsOutput();
+        RB0 = 1;
+        TRISB = 0; //PortB como salida
+        RB0 = 0;
         notOE = 1;
         dowait();
 
@@ -107,19 +103,6 @@ void copyAll(unsigned int from, unsigned int to) {
 
         ramAddress++;
     }
-}
-
-int main(void) {
-    //----configuraciones iniciales----//
-    RP0 = 0x0;
-    PORTA = 0x0;
-    PORTB = 0x0;
-    RP0 = 0x1;
-    TRISA = 0x0;
-    TRISB = 0x0;
-    RP0 = 0x0;
-
-    copyAll(START_RAM_ADDR, END_RAM_ADDR); //Copia de la ROM a la RAM
 
     while (1);
 }
