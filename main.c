@@ -100,7 +100,8 @@ int main(void) {
         dowait();
         notWE = 0; //Se guarda en la RAM
         dowait();
-
+        notWE = 1;
+        
         ramAddress++;
     }
 
