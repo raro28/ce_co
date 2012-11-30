@@ -26,7 +26,6 @@
 #define LCD_SHIFT	   0x14
 #define LCD_CLS		   0x01
 
-#define LCD_SETCGADDR	   0x40
 #define LCD_SETDDADDR1	   0x80
 #define LCD_SETDDADDR2	   0xC0
 
@@ -38,4 +37,3 @@ void lcd_wait();
 void clearscreen();
 void wrcmd(char data);
 void wrdata(char data);
-void wrcgchr(unsigned char *arrayptr, int offset);

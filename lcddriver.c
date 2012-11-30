@@ -65,14 +65,6 @@ void wrdata(char data) {
     lcd_wait();
 }
 
-void wrcgchr(unsigned char *arrayptr, int offset) {
-    wrcmd(LCD_SETCGADDR + offset); // Set the CG RAM address.
-
-    while (*arrayptr != '\n') {
-        wrdata(*arrayptr++);
-    }
-}
-
 void lcd_wait() {
     unsigned char status = 0;
 
@@ -83,10 +75,12 @@ void lcd_wait() {
     do {
         RS = 0;
         RW = 1;
+
         E = 1;
         asm("NOP");
         status = DATABUS; // read the status
         E = 0;
+        
     } while (status & 0x80); // test busy flag.
 
     STATUSbits.RP0 = 1;
