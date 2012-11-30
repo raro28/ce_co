@@ -4,11 +4,17 @@
  *
  * Created on November 30, 2012, 9:57 AM
  */
+
 #pragma config BOREN = OFF, CPD = OFF, DEBUG = OFF, WRT = OFF, FOSC = XT, WDTE = OFF, CP = OFF, LVP = OFF, PWRTE = OFF
 #include "lcd8bit.h"
 #include "minimal.h"
 
-char text[] = "123456789ABCDEFGHIJKLMNOPQRSTUVWXZ\n";
+char text[] = "Hector - Ricardo\n";
+
+void pause(unsigned int mseconds) {
+    unsigned long count = mseconds * MHZ * 1000;
+    while (count--);
+}
 
 int main(int argc, char** argv) {
     /* Inicializacion del PIC*/
@@ -39,10 +45,12 @@ int main(int argc, char** argv) {
     lcd_init(); // Initialise the LCD Display
 
     char *textptr = text;
-
     textptr = text;
     while (*textptr != '\n') // Write the String.
     {
         wrdata(*textptr++);
+        pause(1000);
     }
+
+    while (1);
 }

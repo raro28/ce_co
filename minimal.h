@@ -7,6 +7,8 @@
 
 #include <xc.h>
 
+#define MHZ 20
+
 /*
  *intervalo de direcciones de la memoria ROM.
  */
