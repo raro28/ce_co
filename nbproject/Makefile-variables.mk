@@ -6,8 +6,8 @@
 CND_BASEDIR=`pwd`
 # default configuration
 CND_ARTIFACT_DIR_default=dist/default/production
-CND_ARTIFACT_NAME_default=minimal.X.production.hex
-CND_ARTIFACT_PATH_default=dist/default/production/minimal.X.production.hex
+CND_ARTIFACT_NAME_default=ce_co.production.hex
+CND_ARTIFACT_PATH_default=dist/default/production/ce_co.production.hex
 CND_PACKAGE_DIR_default=${CND_DISTDIR}/default/package
-CND_PACKAGE_NAME_default=minimal.x.tar
-CND_PACKAGE_PATH_default=${CND_DISTDIR}/default/package/minimal.x.tar
+CND_PACKAGE_NAME_default=ceco.tar
+CND_PACKAGE_PATH_default=${CND_DISTDIR}/default/package/ceco.tar

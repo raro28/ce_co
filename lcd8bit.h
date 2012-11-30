@@ -10,15 +10,14 @@
 /********************************************************************/
 /********************************************************************/
 
-typedef signed char int8;
-typedef signed int int16;
-typedef signed long int32;
-typedef unsigned short WORD;
-typedef unsigned char BYTE;
-typedef int8 BOOL;
+//LCD Wiring
+#define RS RA2 //Write Enable
+#define RW RA3 //Write Enable
+#define E RA5 //Write Enable
+
 
 //Display Config.
-#define MAX_DISPLAY_CHAR 15
+#define MAX_DISPLAY_CHAR 16
 
 //LCD Commands
 #define LCD_SETFUNCTION	   0x38
@@ -44,6 +43,4 @@ void lcd_wait();
 void clearscreen();
 void wrcmd(char data);
 void wrdata(char data);
-void wrcgchr(BYTE *arrayptr, int offset);
-void pause(int num);
-void eat();
+void wrcgchr(unsigned char *arrayptr, int offset);
