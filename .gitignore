@@ -1,0 +1,7 @@
+bin
+dist
+funclist
+build
+*.DBK
+*.PWI
+*.SDF
