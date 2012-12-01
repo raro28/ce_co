@@ -9,13 +9,6 @@
 #include "lcd8bit.h"
 #include "minimal.h"
 
-char text[] = "Hector - Ricardo\n";
-
-void pause(unsigned int mseconds) {
-    unsigned long count = mseconds * MHZ * 1000;
-    while (count--);
-}
-
 int main(int argc, char** argv) {
     /* Inicializacion del PIC*/
     STATUSbits.RP0 = 0;
@@ -44,13 +37,12 @@ int main(int argc, char** argv) {
 
     lcd_init(); // Initialise the LCD Display
 
-    char *textptr = text;
-    textptr = text;
-    while (*textptr != '\n') // Write the String.
-    {
-        wrdata(*textptr++);
-        pause(1000);
-    }
+    printf("hola mundo");
 
     while (1);
+}
+
+void pause(unsigned int mseconds) {
+    unsigned long count = mseconds * MHZ * 1000;
+    while (count--);
 }

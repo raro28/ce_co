@@ -6,6 +6,7 @@
  */
 
 #include <xc.h>
+#include <stdio.h>
 
 #define MHZ 20
 
@@ -30,3 +31,5 @@
  * Bus de direcciones conformado por el puerto b y c
  */
 extern volatile unsigned int ADDRBUS @ 0x006;
+
+void pause(unsigned int);

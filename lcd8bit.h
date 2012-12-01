@@ -11,12 +11,9 @@
 /********************************************************************/
 
 //LCD Wiring
-#define RS RA2 //Write Enable
-#define RW RA3 //Write Enable
-#define E RA5 //Write Enable
-
-//Display Config.
-#define MAX_DISPLAY_CHAR 16
+#define LCD_RS RA2 //Write Enable
+#define LCD_RW RA3 //Write Enable
+#define LCD_E RA5 //Write Enable
 
 //LCD Commands
 #define LCD_SETFUNCTION	   0x38
@@ -34,6 +31,6 @@
  ******************************/
 void lcd_init();
 void lcd_wait();
-void clearscreen();
-void wrcmd(char data);
-void wrdata(char data);
+void lcd_cls();
+void lcd_cmd(char data);
+void putch(char data);
