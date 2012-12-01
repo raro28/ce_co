@@ -31,6 +31,5 @@
  ******************************/
 void lcd_init();
 void lcd_wait();
-void lcd_cls();
 void lcd_cmd(char data);
 void putch(char data);

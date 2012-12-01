@@ -35,9 +35,57 @@ int main(int argc, char** argv) {
     notOE = 1;
     notWE = 1;
 
-    lcd_init(); // Initialise the LCD Display
+    lcd_init(); // Inicializa el display
 
     printf("hola mundo");
+    pause(100000);
+    lcd_cmd(LCD_CLS);
+
+    lcd_cmd(LCD_SETDDADDR2);
+    printf("cp ROM -> RAM");
+    
+    lcd_cmd(LCD_SETDDADDR1);
+    pause(100000);
+
+    unsigned int addr = 0;
+    unsigned short count = 0;
+
+    while(addr <= END_ROM_ADDR){
+        STATUSbits.RP0 = 1;
+        TRISD = 0xFF;
+        STATUSbits.RP0 = 0;
+
+        ADDRBUS = addr;
+        notOE = 0;
+        pause(10);
+
+        FSR = PORTD;
+
+        notOE = 1;
+        PORTD = 0;
+        
+        STATUSbits.RP0 = 1;
+        TRISD = 0x0;
+        STATUSbits.RP0 = 0;
+
+        ADDRBUS |= START_RAM_ADDR;
+
+        PORTD = FSR;
+        notWE = 0;
+        pause(10);
+        notWE = 1;
+
+        if(count++ == 16){
+            lcd_cmd(LCD_SETDDADDR2);
+        } else if(count == 32){    
+            lcd_cmd(LCD_CLS);
+            count = 0;            
+        }
+
+        printf("%x",FSR);
+
+        addr++;
+    }
 
     while (1);
 }

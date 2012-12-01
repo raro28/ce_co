@@ -57,6 +57,7 @@ void putch(char c) {
     LCD_E = 0;
 
     lcd_wait();
+    DATABUS = 0;
 }
 
 void lcd_wait() {
