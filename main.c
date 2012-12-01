@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 
     printf("hola mundo");
     pause(100000);
-    lcd_cmd(LCD_CLS);
+    lcd_cls();
 
     lcd_cmd(LCD_SETDDADDR2);
     printf("cp ROM -> RAM");
@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
         if(count++ == 16){
             lcd_cmd(LCD_SETDDADDR2);
         } else if(count == 32){    
-            lcd_cmd(LCD_CLS);
+            lcd_cls();
             count = 0;            
         }
 
@@ -91,6 +91,6 @@ int main(int argc, char** argv) {
 }
 
 void pause(unsigned int mseconds) {
-    unsigned long count = mseconds * MHZ * 1000;
+    unsigned long count = mseconds * MHZ * 100;
     while (count--);
 }

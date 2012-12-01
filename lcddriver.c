@@ -29,7 +29,7 @@ void lcd_init() {
     lcd_cmd(LCD_SETDDADDR1);
 }
 
-void clearscreen() {
+void lcd_cls() {
     lcd_cmd(LCD_CLS);
     lcd_cmd(LCD_SETDDADDR1 + 0x00);
 }
