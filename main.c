@@ -7,9 +7,32 @@
 
 #pragma config BOREN = OFF, CPD = OFF, DEBUG = OFF, WRT = OFF, FOSC = XT, WDTE = OFF, CP = OFF, LVP = OFF, PWRTE = OFF
 #include "lcd8bit.h"
+#include "calc.h"
 #include "minimal.h"
 
 int main(int argc, char** argv) {
+    system_init();
+
+    printf("hola mundo");
+    pause(100000);
+    lcd_cls();
+
+    lcd_cmd(LCD_SETDDADDR2);
+    printf("cp ROM -> RAM");
+    
+    lcd_cmd(LCD_SETDDADDR1);
+    pause(100000);
+
+    calc_evaluate();
+}
+
+void pause(unsigned int mseconds) {
+    unsigned long count = mseconds * MHZ * 100;
+    while (count--);
+}
+
+void system_init()
+{
     /* Inicializacion del PIC*/
     STATUSbits.RP0 = 0;
     STATUSbits.RP1 = 0;
@@ -36,61 +59,4 @@ int main(int argc, char** argv) {
     notWE = 1;
 
     lcd_init(); // Inicializa el display
-
-    printf("hola mundo");
-    pause(100000);
-    lcd_cls();
-
-    lcd_cmd(LCD_SETDDADDR2);
-    printf("cp ROM -> RAM");
-    
-    lcd_cmd(LCD_SETDDADDR1);
-    pause(100000);
-
-    unsigned int addr = 0;
-    unsigned short count = 0;
-
-    while(addr <= END_ROM_ADDR){
-        STATUSbits.RP0 = 1;
-        TRISD = 0xFF;
-        STATUSbits.RP0 = 0;
-
-        ADDRBUS = addr;
-        notOE = 0;
-        pause(10);
-
-        FSR = PORTD;
-
-        notOE = 1;
-        PORTD = 0;
-        
-        STATUSbits.RP0 = 1;
-        TRISD = 0x0;
-        STATUSbits.RP0 = 0;
-
-        ADDRBUS |= START_RAM_ADDR;
-
-        PORTD = FSR;
-        notWE = 0;
-        pause(10);
-        notWE = 1;
-
-        if(count++ == 16){
-            lcd_cmd(LCD_SETDDADDR2);
-        } else if(count == 32){    
-            lcd_cls();
-            count = 0;            
-        }
-
-        printf("%x",FSR);
-
-        addr++;
-    }
-
-    while (1);
-}
-
-void pause(unsigned int mseconds) {
-    unsigned long count = mseconds * MHZ * 100;
-    while (count--);
 }
