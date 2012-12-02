@@ -22,11 +22,11 @@ enum ERROR {
 /************************************************************************                   
  ***** FUNCTION PROTOTYPES *****
  ******************************/
-void calc_evaluate();
-char calc_getkey();
+void keypad_init();
+char keypad_getkey();
 
 //Utility functions.                                                                        
-signed char calc_testkey(char ch);
+signed char keypad_testkey(char ch);
 
 // Keypad Functions.
 char keypadread();

@@ -7,17 +7,11 @@
 
 #pragma config BOREN = OFF, CPD = OFF, DEBUG = OFF, WRT = OFF, FOSC = XT, WDTE = OFF, CP = OFF, LVP = OFF, PWRTE = OFF
 #include "lcd8bit.h"
-#include "calc.h"
+#include "keypad.h"
 #include "minimal.h"
 
 int main(int argc, char** argv) {
     system_init();
-
-    printf("d(^_^)b");
-    pause(100000);
-    lcd_cls();
-
-    calc_evaluate();
 }
 
 void pause(unsigned int mseconds) {
@@ -53,4 +47,6 @@ void system_init()
     notWE = 1;
 
     lcd_init(); // Inicializa el display
+    printf("d(^_^)b");
+    keypad_init();// Monitorea el teclado
 }
