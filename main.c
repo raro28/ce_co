@@ -13,7 +13,7 @@
 int main(int argc, char** argv) {
     system_init();
 
-    printf("hola mundo");
+    printf("d(^_^)b");
     pause(100000);
     lcd_cls();
 

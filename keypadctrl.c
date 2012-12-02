@@ -8,8 +8,8 @@
  **********************************************************************
  *********************************************************************/
 
-// Rows are connected to Port C 
-// Columns are connected to Port A with external pull-up resistors.
+// Rows are connected to PortD[0..3]
+// Columns are connected to PortD[4..7] with external pull-up resistors.
 
 #include <xc.h>
 #include "calc.h"
@@ -17,8 +17,6 @@
 char keycodes[16] = {'7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '.', '0', '=', '+'};
 
 char keypadread()
-// Find a key, wait for
-// it to be released and return.
 {
     char key = scankeypad();
     if (key)
@@ -28,8 +26,6 @@ char keypadread()
 }
 
 char scankeypad()
-// Scan the keypad for a keypress.
-// Return 0 for no press or the char pressed.
 {
     signed char row, col, tmp;
     char key = 0;

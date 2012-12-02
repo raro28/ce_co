@@ -23,7 +23,7 @@ enum ERROR {
  ***** FUNCTION PROTOTYPES *****
  ******************************/
 void calc_evaluate();
-char calc_getkey(void);
+char calc_getkey();
 
 //Utility functions.                                                                        
 signed char calc_testkey(char ch);
