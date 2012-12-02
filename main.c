@@ -17,12 +17,6 @@ int main(int argc, char** argv) {
     pause(100000);
     lcd_cls();
 
-    lcd_cmd(LCD_SETDDADDR2);
-    printf("cp ROM -> RAM");
-    
-    lcd_cmd(LCD_SETDDADDR1);
-    pause(100000);
-
     calc_evaluate();
 }
 

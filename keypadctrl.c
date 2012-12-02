@@ -34,29 +34,25 @@ char scankeypad()
     signed char row, col, tmp;
     char key = 0;
 
-    // Disable ADC functionality on Port A
-    ADCON1 = 6;
-
-    // Initialise Port for input, and PORTC for output
-    TRISA = PORTC = 0xFF;
-    TRISC = 0;
+    // Initialise PortD[4..7] for input, and PORTD[0..3] for output
+    STATUSbits.RP0 = 1;
+    TRISD = 0xF0;
+    STATUSbits.RP0 = 0;
+    PORTD = 0x0F;
 
     for (row = 0; row < KEYP_NUM_ROWS; row++) { // Drive appropriate row low and read columns:
-        PORTC = ~(1 << row);
+        PORTD = ~(1 << row);
         asm ( "NOP");
-        tmp = PORTA;
+        tmp = PORTD >> 4;
 
         // See if any column is active (low):
         for (col = 0; col < KEYP_NUM_COLS; ++col)
             if ((tmp & (1 << col)) == 0) {
                 signed char idx = (row * KEYP_NUM_COLS) + col;
                 key = keycodes[idx];
-                goto DONE;
+                break;
             }
     }
-DONE:
-
-    // Disable Port Drive and return.
-    TRISC = 0xFF;
+    
     return key;
 }

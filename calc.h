@@ -4,7 +4,7 @@
  ************	           IAR 'C' Calculator                 	    ***********
  ******************************************************************************/
 //Display Config.
-#define MAX_DISPLAY_char 10
+#define MAX_DISPLAY_char 16
 
 // Keypad Config.
 #define KEYP_NUM_ROWS 4
