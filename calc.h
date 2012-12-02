@@ -24,15 +24,9 @@ enum ERROR {
  ******************************/
 void calc_evaluate();
 char calc_getkey(void);
-void calc_format(float f);
-void calc_display(char *buf);
-
-//Operator Indirect function.                                                               
-void calc_opfunctions(char token);
 
 //Utility functions.                                                                        
 signed char calc_testkey(char ch);
-void calc_output(int status);
 
 // Keypad Functions.
 char keypadread();

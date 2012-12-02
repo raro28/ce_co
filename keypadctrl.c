@@ -53,6 +53,11 @@ char scankeypad()
                 break;
             }
     }
-    
+
+    STATUSbits.RP0 = 1;
+    TRISD = 0x00;
+    STATUSbits.RP0 = 0;
+    PORTD = 0;
+
     return key;
 }
