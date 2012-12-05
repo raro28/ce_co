@@ -18,7 +18,7 @@ char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb
 void interrupt keypad_int() {
     unsigned char read = PORTB;
     if (INTCONbits.RBIF) {
-        INTCONbits.RBIF = 0;
+        __delay_us(100);
         unsigned char key = scankeypad();
 
         if (key != 0x10) {
@@ -60,7 +60,8 @@ signed char keypad_testkey(char key) {
         return FALSE;
 }
 
-/************************************************************************
+/******************
+ ******************************************************
  ***** I/O Routines *****
  ************************/
 
@@ -79,7 +80,7 @@ char keypadread() {
     return key;
 }
 
-char scankeypad() {
+char scankeypad() {    
     signed char row, col, tmp;
     unsigned char key = 0x10;
 
