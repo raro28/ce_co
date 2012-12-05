@@ -26,8 +26,7 @@ int main(int argc, char** argv) {
     notOE = 1;
     notWE = 1;
 
-    lcd_init(); // Inicializa el display
-    printf("d(^_^)b");
+    lcd_init();
 
     OPTION_REGbits.nRBPU = 0;
     INTCONbits.GIE = 1;
@@ -47,6 +46,7 @@ void my_usdelay(unsigned int useg){
 }
 
 void search(unsigned char *inputStream) {
-    lcd_cls();
+    lcd_cmd(LCD_SETDDADDR2);
     printf("...");
+    lcd_cmd(LCD_SETDDADDR1);
 }
