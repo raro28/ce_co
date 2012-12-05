@@ -35,18 +35,19 @@ int main(int argc, char** argv) {
     while (1);
 }
 
-void my_msdelay(unsigned int mseg){
-    int count = (_XTAL_FREQ / 1000) * mseg;
-    while(count--);
-}
-
-void my_usdelay(unsigned int useg){
-    int count = (_XTAL_FREQ / 1000000) * useg;
-    while(count--);
-}
-
 void search(unsigned char *inputStream) {
-    lcd_cmd(LCD_SETDDADDR2);
-    printf("...");
+    ADDRBUS = 0;
+    while (ADDRBUS <= END_ROM_ADDR) {
+        DATABUS = 0;
+        TRISB = 0xFF;
+        notOE = 0;
+        FSR = DATABUS;
+        notOE = 1;
+
+        lcd_cmd(LCD_SETDDADDR2);
+        printf("%d:%x", ADDRBUS, FSR);
+        ADDRBUS++;
+    }
+
     lcd_cmd(LCD_SETDDADDR1);
 }

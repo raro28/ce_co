@@ -10,6 +10,7 @@ char pos = 0;
 
 void interrupt keypad_int() {
     unsigned char read = PORTB;
+    PORTB = read;
     if (INTCONbits.RBIF) {
         INTCONbits.RBIF = 0;
         __delay_ms(10);
@@ -23,8 +24,7 @@ void interrupt keypad_int() {
                 for (int i = 0; i < pos; i++) {
                     printf("%x", number[i]);
                 }
-            } else
-            {
+            } else {
                 search(number);
                 pos = 0;
             }

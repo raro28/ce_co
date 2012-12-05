@@ -41,7 +41,7 @@ void lcd_cmd(char cmdcode) {
     LCD_RS = LCD_RW = 0;
 
     LCD_E = 1;
-    my_msdelay(130);
+    __delay_ms(130);
     LCD_E = 0;
 
     lcd_wait();
@@ -55,7 +55,7 @@ void putch(char c) {
     LCD_RW = 0;
 
     LCD_E = 1;
-    my_usdelay(130);
+    __delay_us(130);
     LCD_E = 0;
 
     DATABUS = 0;
@@ -72,10 +72,10 @@ void lcd_wait() {
         LCD_RW = 1;
 
         LCD_E = 1;
-        my_usdelay(130);
+        __delay_us(130);
         status = DATABUS; // read the status
         LCD_E = 0;
-        
+        DATABUS = 0;
     } while (status & 0x80); // test busy flag.
 
     TRISB = 0xF0;
