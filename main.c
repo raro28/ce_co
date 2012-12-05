@@ -11,7 +11,7 @@
 #include "minimal.h"
 
 int main(int argc, char** argv) {
-ADCON1 = 0x6;
+    ADCON1 = 0x6;
     TRISA = 0;
     TRISB = 0xF0;
     TRISC = 0;
@@ -30,8 +30,8 @@ ADCON1 = 0x6;
     printf("d(^_^)b");
 
     OPTION_REGbits.nRBPU = 0;
-    INTCONbits.RBIE = 1;
     INTCONbits.GIE = 1;
+    INTCONbits.RBIE = 1;
 
     while (1);
 }

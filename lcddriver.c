@@ -35,6 +35,7 @@ void lcd_cls() {
 }
 
 void lcd_cmd(char cmdcode) {
+    TRISB = 0;
     DATABUS = cmdcode;
 
     LCD_RS = LCD_RW = 0;
@@ -47,6 +48,7 @@ void lcd_cmd(char cmdcode) {
 }
 
 void putch(char c) {
+    TRISB = 0;
     DATABUS = c;
 
     LCD_RS = 1;
@@ -56,8 +58,8 @@ void putch(char c) {
     asm("NOP");
     LCD_E = 0;
 
-    lcd_wait();
     DATABUS = 0;
+    lcd_wait();
 }
 
 void lcd_wait() {
@@ -76,5 +78,5 @@ void lcd_wait() {
         
     } while (status & 0x80); // test busy flag.
 
-    TRISB = 0;
+    TRISB = 0xF0;
 }
