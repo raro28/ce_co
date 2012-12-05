@@ -15,7 +15,9 @@ int main(int argc, char** argv) {
 }
 
 void search(unsigned char *inputStream) {
-    lcd_cls();
+    lcd_cmd(LCD_SETDDADDR2);
+    printf("...");
+    lcd_cmd(LCD_SETDDADDR1);
 }
 
 void system_init() {
