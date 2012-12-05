@@ -18,6 +18,7 @@ char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb
 void interrupt keypad_int() {
     unsigned char read = PORTB;
     if (INTCONbits.RBIF) {
+        INTCONbits.RBIF = 0;
         __delay_us(100);
         unsigned char key = scankeypad();
 
@@ -27,57 +28,6 @@ void interrupt keypad_int() {
     }
     
     PORTB &= 0xF0;
-}
-
-void keypad_init() {
-    char number[MAX_DISPLAY_char + 1], key;
-    signed char pos = 0;
-
-    for (;;) {
-        key = keypad_getkey();
-        if (keypad_testkey(key)) {
-            if (pos != MAX_DISPLAY_char) {
-                number[pos++] = key;
-                number[pos] = 0;
-                lcd_cls();
-                for (int i = 0; i < pos; i++) {
-                    printf("%x", number[i]);
-                }
-            }
-        } else {
-            if (pos != 0) {
-                search(number);
-                pos = 0;
-            }
-        }
-    }
-}
-
-signed char keypad_testkey(char key) {
-    if (key <= 0x10)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-/******************
- ******************************************************
- ***** I/O Routines *****
- ************************/
-
-char keypad_getkey() {
-    char mykey;
-    while ((mykey = keypadread()) == 0x00)
-        /* Poll again */;
-    return mykey;
-}
-
-char keypadread() {
-    char key = scankeypad();
-    if (key)
-        while (scankeypad() != 0)
-            /* Nothing */;
-    return key;
 }
 
 char scankeypad() {    
