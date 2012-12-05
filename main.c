@@ -37,29 +37,5 @@ ADCON1 = 0x6;
 }
 
 void search(unsigned char *inputStream) {
-    TRISB = 0;
-    PORTB = 0;
-
-    lcd_cls();
-    unsigned char addr = 0;
-    short count = 0;
-    while(addr <= START_ROM_ADDR){
-        ADDRBUS = addr;
-        TRISD = 0xFF;
-        notOE = 0;
-        __delay_ms(100);
-        FSR = DATABUS;
-        notOE = 1;
-        TRISD = 0;
-
-        lcd_cmd(LCD_SETDDADDR1);
-        printf("[%d]",addr);
-        lcd_cmd(LCD_SETDDADDR2);
-        printf("[%x]",FSR);
-
-        addr ++;
-    }
     
-    PORTB = 0;
-    TRISB = 0xF0;
 }
