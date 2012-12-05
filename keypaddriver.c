@@ -20,11 +20,10 @@ void interrupt keypad_int() {
     unsigned char key = scankeypad();
 
     if (key != 0x10) {
-        lcd_cls();
         printf("%x", key);
     }
 
-    PORTB = 0;
+    PORTB &= 0xF0;
 }
 
 void keypad_init() {
@@ -38,9 +37,8 @@ void keypad_init() {
                 number[pos++] = key;
                 number[pos] = 0;
                 lcd_cls();
-                for( int i=0; i < pos; i++)
-                {
-                    printf("%x",number[i]);
+                for (int i = 0; i < pos; i++) {
+                    printf("%x", number[i]);
                 }
             }
         } else {
