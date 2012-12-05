@@ -16,13 +16,16 @@
 char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf};
 
 void interrupt keypad_int() {
-    INTCONbits.RBIF = 0;
-    unsigned char key = scankeypad();
+    unsigned char read = PORTB;
+    if (INTCONbits.RBIF) {
+        INTCONbits.RBIF = 0;
+        unsigned char key = scankeypad();
 
-    if (key != 0x10) {
-        printf("%x", key);
+        if (key != 0x10) {
+            printf("%x", key);
+        }
     }
-
+    
     PORTB &= 0xF0;
 }
 
