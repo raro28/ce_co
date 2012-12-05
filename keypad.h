@@ -7,5 +7,4 @@
 #define FALSE 0
 #define TRUE  1
 
-void keypad_init();
 char scankeypad();
