@@ -33,3 +33,5 @@
 extern volatile unsigned int ADDRBUS @ 0x007;
 
 void search(char *);
+void my_msdelay(unsigned int);
+void my_usdelay(unsigned int);

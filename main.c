@@ -36,6 +36,16 @@ int main(int argc, char** argv) {
     while (1);
 }
 
+void my_msdelay(unsigned int mseg){
+    int count = _XTAL_FREQ / 1000;
+    while(count--);
+}
+
+void my_usdelay(unsigned int useg){
+    int count = _XTAL_FREQ / 1000000;
+    while(count--);
+}
+
 void search(unsigned char *inputStream) {
     
 }

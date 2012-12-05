@@ -12,7 +12,7 @@ void interrupt keypad_int() {
     unsigned char read = PORTB;
     if (INTCONbits.RBIF) {
         INTCONbits.RBIF = 0;
-        __delay_ms(200);
+        __delay_ms(180);
         unsigned char key = scankeypad();
 
         if (key != 0x10) {
