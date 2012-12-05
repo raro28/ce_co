@@ -25,11 +25,12 @@
 #define notOE RA0 //Output Enable
 #define notWE RA1 //Write Enable
 
-#define DATABUS PORTD //Bus de datos conformado por el puerto b y c
+#define DATABUS PORTB //Bus de datos conformado por el puerto b y c
 
 /*
  * Bus de direcciones conformado por el puerto b y c
  */
-extern volatile unsigned int ADDRBUS @ 0x006;
+extern volatile unsigned int ADDRBUS @ 0x007;
 
 void search(char *);
+void system_writedata(unsigned char);
