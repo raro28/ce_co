@@ -47,5 +47,6 @@ void my_usdelay(unsigned int useg){
 }
 
 void search(unsigned char *inputStream) {
-    
+    lcd_cls();
+    printf("...");
 }
