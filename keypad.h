@@ -26,7 +26,7 @@ void keypad_init();
 char keypad_getkey();
 
 //Utility functions.                                                                        
-signed char keypad_testkey(char ch);
+signed char keypad_testkey(char);
 
 // Keypad Functions.
 char keypadread();

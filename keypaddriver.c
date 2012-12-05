@@ -8,11 +8,12 @@
 #include "keypad.h"
 #include "stdio.h"
 #include "lcd8bit.h"
+#include "minimal.h"
 
 // Rows are connected to PortD[0..3]
 // Columns are connected to PortD[4..7] with external pull-up resistors.
 
-char keycodes[16] = {'7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '.', '0', '=', '+'};
+char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10};
 
 void keypad_init() {
     char number[MAX_DISPLAY_char + 1], key;
@@ -20,24 +21,27 @@ void keypad_init() {
 
     for (;;) {
         key = keypad_getkey();
-        if (keypad_testkey(key)) { // Key test positive for digit so we read it into the
-            // buffer and then write the buffer to the screen/LCD.
+        if (keypad_testkey(key)) {
             if (pos != MAX_DISPLAY_char) {
                 number[pos++] = key;
                 number[pos] = 0;
                 lcd_cls();
-                printf(number);
+                for( int i=0; i < pos; i++)
+                {
+                    printf("%x",number[i]);
+                }
             }
         } else {
-            lcd_cls();
-            printf("funcion %d", key);
+            if (pos != 0) {
+                search(number);
+                pos = 0;
+            }
         }
     }
 }
 
-signed char keypad_testkey(char key)
-{
-    if (((key >= '0') && (key <= '9')))
+signed char keypad_testkey(char key) {
+    if (key <= 0xf)
         return TRUE;
     else
         return FALSE;
@@ -47,17 +51,14 @@ signed char keypad_testkey(char key)
  ***** I/O Routines *****
  ************************/
 
-char keypad_getkey()
-{
+char keypad_getkey() {
     char mykey;
     while ((mykey = keypadread()) == 0x00)
         /* Poll again */;
     return mykey;
 }
 
-
-char keypadread()
-{
+char keypadread() {
     char key = scankeypad();
     if (key)
         while (scankeypad() != 0)
@@ -65,8 +66,7 @@ char keypadread()
     return key;
 }
 
-char scankeypad()
-{
+char scankeypad() {
     signed char row, col, tmp;
     char key = 0;
 
@@ -85,7 +85,7 @@ char scankeypad()
         for (col = 0; col < KEYP_NUM_COLS; ++col)
             if ((tmp & (1 << col)) == 0) {
                 signed char idx = (row * KEYP_NUM_COLS) + col;
-                key = keycodes[idx];
+                key = keyvalues[idx];
                 break;
             }
     }

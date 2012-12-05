@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   main.c
  * Author: ekthor
  *
@@ -19,8 +19,11 @@ void pause(unsigned int mseconds) {
     while (count--);
 }
 
-void system_init()
-{
+void search(unsigned char *inputStream) {
+    lcd_cls();
+}
+
+void system_init() {
     /* Inicializacion del PIC*/
     STATUSbits.RP0 = 0;
     STATUSbits.RP1 = 0;
@@ -48,5 +51,5 @@ void system_init()
 
     lcd_init(); // Inicializa el display
     printf("d(^_^)b");
-    keypad_init();// Monitorea el teclado
+    keypad_init(); // Monitorea el teclado
 }

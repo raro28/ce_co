@@ -34,3 +34,4 @@ extern volatile unsigned int ADDRBUS @ 0x006;
 
 void pause(unsigned int);
 void system_init();
+void search(char *);
