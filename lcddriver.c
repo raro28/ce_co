@@ -63,9 +63,7 @@ void putch(char c) {
 void lcd_wait() {
     unsigned char status = 0;
 
-    STATUSbits.RP0 = 1;
-    TRISD = 0xFF;
-    STATUSbits.RP0 = 0;
+    TRISB = 0xFF;
 
     do {
         LCD_RS = 0;
@@ -78,7 +76,5 @@ void lcd_wait() {
         
     } while (status & 0x80); // test busy flag.
 
-    STATUSbits.RP0 = 1;
-    TRISD = 0;
-    STATUSbits.RP0 = 0;
+    TRISB = 0;
 }
