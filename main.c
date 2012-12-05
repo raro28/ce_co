@@ -14,11 +14,6 @@ int main(int argc, char** argv) {
     system_init();
 }
 
-void pause(unsigned int mseconds) {
-    unsigned long count = mseconds * MHZ * 100;
-    while (count--);
-}
-
 void search(unsigned char *inputStream) {
     lcd_cls();
 }
@@ -26,13 +21,6 @@ void search(unsigned char *inputStream) {
 void system_init() {
     /* Inicializacion del PIC*/
     STATUSbits.RP0 = 0;
-    STATUSbits.RP1 = 0;
-
-    PORTA = 0;
-    PORTB = 0;
-    PORTC = 0;
-    PORTD = 0;
-    PORTE = 0;
 
     STATUSbits.RP0 = 1;
 
@@ -44,12 +32,16 @@ void system_init() {
     TRISD = 0;
     TRISE = 0;
 
-    STATUSbits.RP0 = 0;
-    /*Estado inicial del PIC*/
+    STATUSbits.RP1 = 0;
+
+    PORTA = 0;
+    PORTB = 0;
+    PORTC = 0;
+    PORTD = 0;
+    PORTE = 0;
     notOE = 1;
     notWE = 1;
 
     lcd_init(); // Inicializa el display
     printf("d(^_^)b");
-    keypad_init(); // Monitorea el teclado
 }

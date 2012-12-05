@@ -8,7 +8,7 @@
 #include <xc.h>
 #include <stdio.h>
 
-#define MHZ 20
+#define _XTAL_FREQ 20000000
 
 /*
  *intervalo de direcciones de la memoria ROM.
@@ -32,6 +32,5 @@
  */
 extern volatile unsigned int ADDRBUS @ 0x006;
 
-void pause(unsigned int);
 void system_init();
 void search(char *);
