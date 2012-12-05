@@ -19,20 +19,12 @@ void search(unsigned char *inputStream) {
 }
 
 void system_init() {
-    /* Inicializacion del PIC*/
-    STATUSbits.RP0 = 0;
-
-    STATUSbits.RP0 = 1;
-
     ADCON1 = 0x6;
     TRISA = 0;
-
-    TRISB = 0;
+    TRISB = 0xF0;
     TRISC = 0;
     TRISD = 0;
     TRISE = 0;
-
-    STATUSbits.RP1 = 0;
 
     PORTA = 0;
     PORTB = 0;
@@ -44,4 +36,10 @@ void system_init() {
 
     lcd_init(); // Inicializa el display
     printf("d(^_^)b");
+
+    OPTION_REGbits.nRBPU = 0;
+    INTCONbits.RBIE = 1;
+    INTCONbits.GIE = 1;
+
+    while (1);
 }

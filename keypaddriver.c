@@ -13,7 +13,19 @@
 // Rows are connected to PortD[0..3]
 // Columns are connected to PortD[4..7] with external pull-up resistors.
 
-char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10};
+char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf};
+
+void interrupt keypad_int() {
+    INTCONbits.RBIF = 0;
+    unsigned char key = scankeypad();
+
+    if (key != 0x10) {
+        lcd_cls();
+        printf("%x", key);
+    }
+
+    PORTB = 0;
+}
 
 void keypad_init() {
     char number[MAX_DISPLAY_char + 1], key;
@@ -41,7 +53,7 @@ void keypad_init() {
 }
 
 signed char keypad_testkey(char key) {
-    if (key <= 0xf)
+    if (key <= 0x10)
         return TRUE;
     else
         return FALSE;
@@ -68,18 +80,12 @@ char keypadread() {
 
 char scankeypad() {
     signed char row, col, tmp;
-    char key = 0;
-
-    // Initialise PortD[4..7] for input, and PORTD[0..3] for output
-    STATUSbits.RP0 = 1;
-    TRISD = 0xF0;
-    STATUSbits.RP0 = 0;
-    PORTD = 0x0F;
+    unsigned char key = 0x10;
 
     for (row = 0; row < KEYP_NUM_ROWS; row++) { // Drive appropriate row low and read columns:
-        PORTD = ~(1 << row);
+        PORTB = ~(1 << row);
         asm ( "NOP");
-        tmp = PORTD >> 4;
+        tmp = PORTB >> 4;
 
         // See if any column is active (low):
         for (col = 0; col < KEYP_NUM_COLS; ++col)
@@ -89,11 +95,6 @@ char scankeypad() {
                 break;
             }
     }
-
-    STATUSbits.RP0 = 1;
-    TRISD = 0x00;
-    STATUSbits.RP0 = 0;
-    PORTD = 0;
 
     return key;
 }
