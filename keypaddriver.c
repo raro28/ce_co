@@ -1,17 +1,8 @@
-/******************************************************************************            
- ************                 LABCENTER ELECTRONICS                  ************
- ************           Proteus VSM Sample Design Code               ************
- ************                   IAR 'C' Calculator                   ************
- *******************************************************************************/
-
 #include <xc.h>
 #include "keypad.h"
 #include "stdio.h"
 #include "lcd8bit.h"
 #include "minimal.h"
-
-// Rows are connected to PortD[0..3]
-// Columns are connected to PortD[4..7] with external pull-up resistors.
 
 char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf};
 char number[MAX_DISPLAY_char];

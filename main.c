@@ -11,17 +11,7 @@
 #include "minimal.h"
 
 int main(int argc, char** argv) {
-    system_init();
-}
-
-void search(unsigned char *inputStream) {
-    lcd_cmd(LCD_SETDDADDR2);
-    printf("...");
-    lcd_cmd(LCD_SETDDADDR1);
-}
-
-void system_init() {
-    ADCON1 = 0x6;
+ADCON1 = 0x6;
     TRISA = 0;
     TRISB = 0xF0;
     TRISC = 0;
@@ -44,4 +34,10 @@ void system_init() {
     INTCONbits.GIE = 1;
 
     while (1);
+}
+
+void search(unsigned char *inputStream) {
+    lcd_cmd(LCD_SETDDADDR2);
+    printf("...");
+    lcd_cmd(LCD_SETDDADDR1);
 }
