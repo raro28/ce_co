@@ -41,7 +41,7 @@ void search(unsigned char *inputStream) {
     short hitCount = 0;
     short toHit = (MAX_DISPLAY_char) / 2;
 
-    while (ADDRBUS <= 8 && (hitCount < toHit)) {
+    while (ADDRBUS <= END_ROM_ADDR && (hitCount < toHit)) {
         DATABUS = 0;
         TRISB = 0xFF;
         notOE = 0;
