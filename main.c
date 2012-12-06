@@ -39,9 +39,9 @@ int main(int argc, char** argv) {
 void search(unsigned char *inputStream) {
     ADDRBUS = 0;
     short hitCount = 0;
-    short toHit = (MAX_DISPLAY_char) / 2;
+    short hitLimit = (MAX_DISPLAY_char) / 2;
 
-    while (ADDRBUS <= END_ROM_ADDR && (hitCount < toHit)) {
+    while (ADDRBUS <= END_ROM_ADDR && (hitCount < hitLimit)) {
         DATABUS = 0;
         TRISB = 0xFF;
         notOE = 0;
@@ -73,7 +73,7 @@ void search(unsigned char *inputStream) {
             unsigned char data = DATABUS;
             notOE = 1;
 
-            printf("%x", data);
+            printf("%c", data);
         }
     } else {
         printf("Not Found (U_u)");
