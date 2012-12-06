@@ -33,4 +33,4 @@
 extern volatile unsigned int ADDRBUS @ 0x007;
 
 void search(char *);
-unsigned char nextByte(unsigned char *);
+unsigned char nextByte(unsigned char *, short);

@@ -39,61 +39,59 @@ int main(int argc, char** argv) {
 void search(unsigned char *inputStream) {
     ADDRBUS = 0;
     short hitCount = 0;
-    while (ADDRBUS <= END_ROM_ADDR && hitCount < 4) {
+    short toHit = (MAX_DISPLAY_char) / 2;
+
+    while (ADDRBUS <= 8 && (hitCount < toHit)) {
         DATABUS = 0;
         TRISB = 0xFF;
         notOE = 0;
-        FSR = DATABUS;
+        unsigned char data = DATABUS;
         notOE = 1;
 
-        int next = nextByte(inputStream);
-        if(FSR = next){
+        unsigned char next = nextByte(inputStream, hitCount);
+
+        if (data == next) {
             hitCount++;
-        }else
-        {
-            inputStream = 0;
+        } else {
             hitCount = 0;
         }
 
         ADDRBUS++;
     }
 
-    lcd_cmd(LCD_SETDDADDR2);
-
-    if(hitCount == 8){                
-        for(short dataCount= 0; dataCount < 8; dataCount ++)
-        {
+    lcd_cls();
+    
+    if (hitCount == 4) {
+        printf("Found (^_^)");
+        lcd_cmd(LCD_SETDDADDR2);
+        for (short dataCount = 0; dataCount < 8; dataCount++) {
             ADDRBUS++;
 
             DATABUS = 0;
             TRISB = 0xFF;
             notOE = 0;
-            FSR = DATABUS;
+            unsigned char data = DATABUS;
             notOE = 1;
 
-            unsigned char ldata = FSR & 0x0F;
-            ldata += 0x57;
-            unsigned char hdata = FSR >> 4;
-            hdata += 0x57;
-
-            printf("%c", hdata);
-            printf("%c", ldata);
-
-            ADDRBUS++;
+            printf("%x", data);
         }
-    }else
-    {
-        printf("No Data U_U");
+    } else {
+        printf("Not Found (U_u)");
     }
 
-    lcd_cmd(LCD_SETDDADDR1);
+    __delay_ms(5000);
+    lcd_cls();
 }
 
-unsigned char nextByte(unsigned char *ptr)
-{
-    unsigned char byte = *(ptr++) - 0x57;
-    byte <<= 4;
-    byte |= *(ptr++);
+unsigned char nextByte(unsigned char *ptr, short hitCount) {
+    unsigned char shift = 2 * hitCount;
 
-    return byte;
+    unsigned char high = ptr[shift];
+    high -= ((high > 0x39) ? 0x57 : 0x30);
+    high <<= 4;
+
+    unsigned char low = ptr[shift +1];
+    low -= ((low > 0x39) ? 0x57 : 0x30);
+
+    return high | low;
 }

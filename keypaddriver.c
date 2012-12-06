@@ -4,7 +4,7 @@
 #include "lcd8bit.h"
 #include "minimal.h"
 
-char keyvalues[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+char keyvalues[16] = {'7', '4', '1', 'e', '8', '5', '2', 0x30 , '9', '6', '3', 'f', 'a', 'b', 'c', 'd'};
 char number[MAX_DISPLAY_char];
 char pos = 0;
 
