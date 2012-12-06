@@ -4,7 +4,7 @@
 #include "lcd8bit.h"
 #include "minimal.h"
 
-char keyvalues[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf};
+char keyvalues[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 char number[MAX_DISPLAY_char];
 char pos = 0;
 
@@ -21,9 +21,7 @@ void interrupt keypad_int() {
                 number[pos++] = key;
                 number[pos] = 0;
                 lcd_cls();
-                for (int i = 0; i < pos; i++) {
-                    printf("%x", number[i]);
-                }
+                printf(number);
             } else {
                 search(number);
                 pos = 0;
