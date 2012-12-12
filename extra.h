@@ -1,3 +1,4 @@
+#include <xc.h>
 
 /*
  *Intervalo de direcciones de la memoria RAM.
