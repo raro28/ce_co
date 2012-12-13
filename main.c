@@ -16,11 +16,11 @@ void loadAddress(unsigned int address) {
     AL1 = 1;
     //---bits bajos de la direccion
     UNIVERSAL_BUS = address;
-    __delay_us(100);
+    __delay_ms(100);
     AL0 = 0;
     //---bits altos de la direccion
     UNIVERSAL_BUS = address >> 8;
-    __delay_us(100);
+    __delay_ms(100);
     AL1 = 0;
 }
 
@@ -35,10 +35,10 @@ int main(void) {
     lcd_init();
 
     printf("Hi there ^_^");
-    __delay_ms(1000);
+    __delay_us(1000);
     lcd_cls();
 
-    unsigned int romAddres = START_ROM_ADDR; //Primer direccion;
+    unsigned int romAddres = 0x5c0; //Primer direccion;
     
     while (romAddres <= END_ROM_ADDR) {
         //---Condiciones iniciales
@@ -53,15 +53,18 @@ int main(void) {
 
         TRISB = 0xFF; //PortB como entrada
         notOE = 0; //--Coloca el dato de la ROM en el bus universal
-        __delay_us(100);
+        __delay_us(1);
         FSR = PORTB; //--PIC guarda el dato
         notOE = 1;
         TRISB = 0; //PortB como salida
-        
         printf("%x", FSR);
 
         romAddres++;
     }
+
+    lcd_cls();
+
+    printf("fin");
 
     while (1);
 }
